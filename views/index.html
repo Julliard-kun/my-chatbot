@@ -6,7 +6,7 @@
         <title>My Chatbot</title>
         <link rel="stylesheet" href="/assets/css/index.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-        <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+        <link rel="icon" type="image/x-icon" href="/assets/images/favicon.png">
     </head>
 
     <body>
@@ -54,6 +54,60 @@
                     getCurrentTimestamp();
                 }
             });
+        </script>
+
+        <script>
+            document.getElementById('sendButton').addEventListener('click', () => {
+                sendMessage();
+
+                async function sendMessage() {
+                    const messageInput = document.getElementById('messageInput');
+                    const chatMessages = document.getElementById('chatMessages');
+                    
+                    console.log('sendMessage function called');
+                    const userMessage = messageInput.value;
+                    if (!userMessage) return;
+
+                    chatMessages.insertAdjacentHTML('beforeend', `
+                        <div class="message user-message">
+                            <div class="message-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="message-content">
+                                <p>${userMessage}</p>
+                                <span class="message-time" id="currentTimestamp"></span>
+                            </div>
+                        </div>
+                    `);
+
+                    const response = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ messageInput: userMessage })
+                            
+
+                    });
+
+                    const data = await response.json();
+                    chatMessages.insertAdjacentHTML('beforeend', `
+                        <div class="message bot-message">
+                            <div class="message-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message-content">
+                                <p>${(data && data.replay) ? data.replay : 'No response'}</p>
+                                <span class="message-time" id="currentTimestamp"></span>
+                            </div>
+                        </div>
+                    `);
+                    messageInput.value = '';
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+
+                }
+
+            });
+
         </script>
     </body>
 </html>

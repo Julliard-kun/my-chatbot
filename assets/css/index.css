@@ -156,11 +156,13 @@ body {
 }
 
 .user-message .message-content {
-    background: linear-gradient(135deg, #b3d9ff 0%, #4a90e2 50%, #2c5282 100%);
+    background: white;
     color: white;
 }
 
 .message-content p {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: black;
     margin: 0;
     line-height: 1.4;
     word-wrap: break-word;
