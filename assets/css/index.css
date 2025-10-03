@@ -140,7 +140,7 @@ body {
 
 .user-message .message-avatar {
     background: linear-gradient(135deg, #b3d9ff 0%, #4a90e2 50%, #2c5282 100%);
-    color: white;
+    color: black;
 }
 
 .bot-message .message-avatar {
@@ -176,7 +176,7 @@ body {
 }
 
 .user-message .message-time {
-    color: rgba(255, 255, 255, 0.8);
+    color: #64748b;
 }
 
 .bot-message .message-time {

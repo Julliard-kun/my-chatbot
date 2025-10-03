@@ -50,9 +50,7 @@
         <script src="/assets/js/index.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', () => {
-                if (typeof getCurrentTimestamp === 'function') {
-                    getCurrentTimestamp();
-                }
+                getCurrentTimestamp();
             });
         </script>
 
@@ -68,6 +66,10 @@
                     const userMessage = messageInput.value;
                     if (!userMessage) return;
 
+                    messageInput.disabled = true;
+                    messageInput.value = '';
+                    document.getElementById('sendButton').disabled = true;
+
                     chatMessages.insertAdjacentHTML('beforeend', `
                         <div class="message user-message">
                             <div class="message-avatar">
@@ -75,7 +77,21 @@
                             </div>
                             <div class="message-content">
                                 <p>${userMessage}</p>
-                                <span class="message-time" id="currentTimestamp"></span>
+                                <span class="message-time">${getCurrentTimestampText()}</span>
+                            </div>
+                        </div>
+                    `);
+
+                    const typingId = `typing-${Date.now()}`;
+                    chatMessages.insertAdjacentHTML('beforeend', `
+                        <div class="typing-indicator" id="${typingId}">
+                            <div class="message-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="typing-dots">
+                                <span class="typing-dot"></span>
+                                <span class="typing-dot"></span>
+                                <span class="typing-dot"></span>
                             </div>
                         </div>
                     `);
@@ -89,6 +105,8 @@
                     });
 
                     const data = await response.json();
+                    const typingEl = document.getElementById(typingId);
+                    if (typingEl) typingEl.remove();
                     chatMessages.insertAdjacentHTML('beforeend', `
                         <div class="message bot-message">
                             <div class="message-avatar">
@@ -96,18 +114,16 @@
                             </div>
                             <div class="message-content">
                                 <p>${(data && data.replay) ? data.replay : 'No response'}</p>
-                                <span class="message-time" id="currentTimestamp"></span>
+                                <span class="message-time">${getCurrentTimestampText()}</span>
                             </div>
                         </div>
                     `);
-                    messageInput.value = '';
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
 
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    document.getElementById('sendButton').disabled = false;
 
                 }
-
             });
-
         </script>
     </body>
 </html>
