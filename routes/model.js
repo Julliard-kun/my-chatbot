@@ -1,5 +1,6 @@
 import express from 'express';
 import { Ollama } from "@langchain/ollama";
+import { ChatBufferMemory } from "@langchain/community/memory";
 
 const router = express.Router();
 
@@ -8,7 +9,16 @@ console.log("chatbot.js loaded");
 const normalModel = new Ollama({
     model: "llama3.2:3b",
     baseUrl: "http://localhost:11434",
+    temperature: 0.0,
+    memory: new ChatBufferMemory()
 });
+
+const creativeModel = new Ollama({
+    model: "llama3.2:3b",
+    baseUrl: "http://localhost:11434",
+    temperature: 0.8,
+    memory: new ChatBufferMemory()
+})
 
 router.post("/chat", async (req, res) => {
     try {

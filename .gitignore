@@ -1,6 +1,11 @@
 # Environment variables
 .env
+
+# Node Configurations
 node_modules
 package-lock.json
 package.json
+
+# Placeholder files
 assets/css/placeholder.css
+assets/css/placeholder.html

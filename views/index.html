@@ -84,7 +84,7 @@
 
                     const typingId = `typing-${Date.now()}`;
                     chatMessages.insertAdjacentHTML('beforeend', `
-                        <div class="typing-indicator" id="${typingId}">
+                        <div class="message bot-message" id="${typingId}">
                             <div class="message-avatar">
                                 <i class="fas fa-robot"></i>
                             </div>
@@ -101,7 +101,6 @@
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ messageInput: userMessage })
                             
-
                     });
 
                     const data = await response.json();
@@ -121,6 +120,19 @@
 
                     chatMessages.scrollTop = chatMessages.scrollHeight;
                     document.getElementById('sendButton').disabled = false;
+                    document.getElementById('messageInput').disabled = false;
+                    saveMemory(userMessage);
+
+                }
+
+                async function saveMemory(userMessage) {
+                    const response = await fetch('/api/memory', {
+                        method: 'POST',
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ userMessage: userMessage })
+                    });
+
+                    
 
                 }
             });
